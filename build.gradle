@@ -1,0 +1,86 @@
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.4.RELEASE")
+    }
+}
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://repo.spring.io/libs-release" }
+    }
+}
+
+subprojects {
+    group = "org.mvander3"
+    version = project.VERSION
+
+    buildDir = 'target'
+    ext.distDir = "$buildDir/dist"
+    ext.resourcesDir = "src/main/resources"
+    ext.etcDir = "$resourcesDir/etc"
+    ext.libDir = "$ext.distDir/lib"
+    ext.classesDir = "$buildDir/classes"
+
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'eclipse'
+    apply plugin: 'spring-boot'
+
+    jar {
+        destinationDir = file(libDir)
+    }
+    
+    project.sourceSets.main.resources.exclude "**/*"
+    
+    project.configurations {
+        intTestCompile.extendsFrom testCompile
+        intTestRuntime.extendsFrom testRuntime
+        distributions
+        jmockitJar
+    }
+
+    dependencies {
+        compile("org.springframework.boot:spring-boot-starter-web")
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.hamcrest:hamcrest-all:1.3'
+        testCompile 'org.springframework:spring-test:3.1.4.RELEASE'
+    }
+
+    test {
+        beforeTest { descriptor ->
+            println "Executing test ${descriptor.name}"
+        }
+
+        afterEvaluate {
+            useJUnit()
+            testLogging {
+                showStackTraces = true
+                showCauses = true
+                exceptionFormat = "full"
+            }
+
+        }
+
+        afterTest { descriptor, result ->
+            println "Executed test ${descriptor.name}"
+        }
+    }
+
+    // Only cache SNAPSHOT dependencies for a few minutes
+    project.configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 3, 'minutes'
+    }
+
+    task wrapper(type: Wrapper) {
+        gradleVersion = '1.11'
+    }
+
+}
+
