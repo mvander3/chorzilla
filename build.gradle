@@ -73,11 +73,6 @@ subprojects {
         }
     }
 
-    // Only cache SNAPSHOT dependencies for a few minutes
-    project.configurations.all {
-        resolutionStrategy.cacheChangingModulesFor 3, 'minutes'
-    }
-
     task wrapper(type: Wrapper) {
         gradleVersion = '1.11'
     }
