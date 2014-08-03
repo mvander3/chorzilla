@@ -18,5 +18,5 @@ public class ChoreList {
     public String toString() {
         return "ChoreList [chores=" + chores + "]";
     }
-    
+     
 }

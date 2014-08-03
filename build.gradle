@@ -31,20 +31,12 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'eclipse'
-    apply plugin: 'spring-boot'
 
     jar {
         destinationDir = file(libDir)
     }
     
     project.sourceSets.main.resources.exclude "**/*"
-    
-    project.configurations {
-        intTestCompile.extendsFrom testCompile
-        intTestRuntime.extendsFrom testRuntime
-        distributions
-        jmockitJar
-    }
 
     dependencies {
         compile("org.springframework.boot:spring-boot-starter-web")

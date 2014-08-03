@@ -2,11 +2,11 @@ package org.mvander3.chorzilla;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.joda.time.DateTime;
 import org.mvander3.chorzilla.domain.Chore;
-import org.mvander3.chorzilla.domain.ChoreList;
 import org.mvander3.chorzilla.domain.ChoreStatus;
 import org.mvander3.chorzilla.domain.history.ChoreHistory;
 import org.mvander3.chorzilla.domain.history.CompletionRecord;
@@ -30,10 +30,10 @@ public class ChorzillaController {
 
     private final AtomicLong counter = new AtomicLong();
 
-    @RequestMapping("/chorzilla")
-    public ChoreList greeting(@RequestParam(value="name", required=false, defaultValue="anyone") String name) {
+    @RequestMapping("/chores")
+    public List<Chore> getChores(@RequestParam(value="name", required=false, defaultValue="anyone") String name) {
 //        try {
-            ChoreList choreList = new ChoreList(Lists.newArrayList(makeMopKitchenChore(), makeStainMailboxChore()));
+            List<Chore> choreList = Lists.newArrayList(makeMopKitchenChore(), makeStainMailboxChore());
             log.info("Returning choreList for " + name + ": " + choreList);
             if(name.equals("anyone")) {
                 throw new RuntimeException("Please pass a name.");

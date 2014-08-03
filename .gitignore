@@ -3,3 +3,6 @@
 **/.project
 **/.classpath
 **/org.eclipse.jdt.core.prefs
+**/.settings
+**/bower_components
+**/node_modules
